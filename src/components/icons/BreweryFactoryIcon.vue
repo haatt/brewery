@@ -11,7 +11,8 @@
 </template>
 
 <script lang="js">
-export default {
-    name: "BreweryFactoryIcon",
-}
+    // NOTE: Se creo un icono como un componente para facilitar su manejo y facilitar su mantenimiento
+    export default {
+        name: "BreweryFactoryIcon",
+    }
 </script>

@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+// NOTE: Lo ideal es tener un storage de Vuex por cada modulo, es por eso que cree un nuevo archivo para mi vista de cervezas
 export default {
     namespaced: true,
     state: {
         currentPage: 1,
         itemsPerPage: 10,
         pageCount: 1,
+        // NOTE: El paginador podría mostrar paginas vacías porque el API no envía el total de elementos encontrados al filtrar
         totalItems: 0,
         beersRows: [],
         singleExpand: true,
@@ -101,10 +103,6 @@ export default {
         },
         setFilterSearchBy({commit}, value) {
             commit('filterSearchBy', value);
-        },
-        setItemsPerPage({commit}, value) {
-            commit('itemsPerPage', value);
-            commit('currentPage', 1);
         },
         setCurrentPage({commit}, value) {
             commit('currentPage', value);

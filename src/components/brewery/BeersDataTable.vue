@@ -8,7 +8,7 @@
             :server-items-length="getTotalItems"
             :hide-default-header="false"
             :loading="loading"
-            :items-per-page.sync="getItemsPerPage"
+            :items-per-page="itemsPerPage"
             @page-count="setPageCount"
             hide-default-footer
             show-expand
@@ -20,6 +20,7 @@
     
             <!-- Column Image -->
             <template v-slot:[`item.image_url`]="{ item }">
+                <!-- NOTE: Para hacer uso de componentes o "celdas personalizadas" usamos un slot correspondiente al de la celda que deseamos personalizar -->
                 <v-img :src="item.image_url" max-height="60" max-width="20" contain class="ma-1"/>
             </template>
     
@@ -36,8 +37,9 @@
 </template>
 
 <script lang="js">
-    import FormFilter from '@/components/FormFilter.vue'
+    import FormFilter from '@/components/brewery/FormFilter.vue'
     import ExternalPaginator from '@/components/core/ExternalPaginator.vue'
+    // NOTE: Se importan los getters y action de nuestro storage para poder acceder directamente desde nuestro componente como si fuesen funciones propias del componente
     import { mapGetters, mapActions } from 'vuex'
 
     export default {
@@ -85,8 +87,18 @@
                 },
                 deep: true
             },
+            itemsPerPage(newValue, oldValue) {
+                if(newValue !== oldValue) {
+                    this.$forceUpdate();
+                }
+            },
         },
         computed: {
+            itemsPerPage () {
+                // NOTE: No es recomendable tener la lógica directamente en los props de un componente o directamente en el DOM por esa razón se agrega este computed
+                return parseInt(this.getItemsPerPage);
+            },
+            // NOTE: Agregamos los getters a nuestros computed para acceder a los getters para acceder directamente como si fuese un computed mas
             ...mapGetters('beers', [
                 'getBeersRows',
                 'getSingleExpand',
@@ -101,6 +113,7 @@
                 await this.fetchBeers();
                 this.loading = false
             },
+            // NOTE: Ordenamos los rows dentro del componente ya que deseamos ordenar los datos de acuerdo a las opciones de la datatable, además nuestra API no cuenta con opciones para realizar el ordenamiento enviando las opciones
             orderRows () {
                 const { sortBy, sortDesc, page, itemsPerPage } = this.options
                 let items = this.getBeersRows;
@@ -129,6 +142,7 @@
                 this.beers = items;
                 this.totalBeers = items?.length;
             },
+            // NOTE: Agregamos los setters a nuestros methods para acceder a los setters para acceder directamente como si fuese una función mas del componente
             ...mapActions('beers', [
                 'fetchBeers',
                 'setPageCount',

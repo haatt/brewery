@@ -1,17 +1,16 @@
 <template>
-    <div>    
-        <v-card
-            class="d-md-flex justify-md-space-between"
-            flat
-        >
-            <v-card class="d-md-flex" flat>
+    <v-container class="my-6">
+        <v-row>
+            <v-col cols="12" md="5" lg="4">
                 <v-select
                     name="filterSearchBy"
                     class="mr-2"
                     v-model="filterSearchBy"
                     prefix="Filtrar por: "
                     :items="items"
-                />
+                />    
+            </v-col>
+            <v-col cols="12" md="4">
                 <v-form @submit.prevent="onSubmit" v-model="valid" ref="filterForm" fluid>
                     <v-text-field
                         name="filterSearchText"
@@ -26,25 +25,28 @@
                         @click:append-outer="onSubmit"
                     />
                 </v-form>
-            </v-card>
-
-            <v-switch
-                name="singleExpand"
-                v-model="singleExpand"
-                label="Expansión única"
-            />
-        </v-card>
-        <v-card flat>
-            <v-chip
-                v-if="getFilterSearchText"
-                class="ma-2"
-                close
-                @click:close="onClearFilters"
-            >
-                {{getFilterSearchText}}
-            </v-chip>
-        </v-card>
-    </div>
+            </v-col>
+            <v-spacer/>
+            <v-col cols="auto">
+                <v-switch
+                    name="singleExpand"
+                    v-model="singleExpand"
+                    label="Expansión única"
+                    class="mt-1"
+                />
+            </v-col>
+        </v-row>
+        <v-row v-if="getFilterSearchText">
+            <v-col>
+                <v-chip
+                    close
+                    @click:close="onClearFilters"
+                >
+                    {{getFilterSearchText}}
+                </v-chip>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="js">
@@ -52,7 +54,6 @@
 
     export default {
         name: "FormFilter",
-        emits: ["singleExpand"],
         data: () => ({
             valid: false,
             singleExpand: true,
@@ -95,6 +96,7 @@
             }
         },
         computed: {
+            // NOTE: Agregamos los getters a nuestros computed para acceder a los getters para acceder directamente como si fuese un computed mas
             ...mapGetters('beers', [
                 'getSingleExpand',
                 'getFilterSearchText',
@@ -134,22 +136,27 @@
             async onSubmit() {
                 this.$refs.filterForm.validate();
                 if(this.valid) {
+                    this.setCurrentPage(1);
                     this.setFilterSearchText(this.filterSearchText);
                     this.setFilterSearchBy(this.filterSearchBy);
                     await this.fetchBeers();
                     this.filterSearchText = "";
+                    this.$refs.filterForm.resetValidation();
                 }
-                this.$refs.filterForm.resetValidation();
             },
             onClearFilters() {
                 this.setFilterSearchText();
+                this.setCurrentPage(1);
                 this.fetchBeers();
+                this.$refs.filterForm.resetValidation();
             },
+            // NOTE: Agregamos los setters a nuestros methods para acceder a los setters para acceder directamente como si fuese una función mas del componente
             ...mapActions('beers', [
                 'fetchBeers',
                 'setSingleExpand',
                 'setFilterSearchText',
-                'setFilterSearchBy'
+                'setFilterSearchBy',
+                'setCurrentPage',
             ]),
         },
     }

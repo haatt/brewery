@@ -7,12 +7,12 @@
 </template>
 
 <script lang="js">
-import BeersDataTable from '@/components/brewery/BeersDataTable.vue';
+    import BeersDataTable from '@/components/brewery/BeersDataTable.vue';
 
-export default {
-    name: "CustomDashboard",
-    components: {
-        BeersDataTable,
-    },
-}
+    export default {
+        name: "CustomDashboard",
+        components: {
+            BeersDataTable,
+        },
+    }
 </script>

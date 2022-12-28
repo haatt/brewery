@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import BreweryFactoryIcon from '@/components/icons/BreweryFactoryIcon.vue';
-import CustomDashboard from './components/CustomDashboard.vue';
+  import BreweryFactoryIcon from '@/components/icons/BreweryFactoryIcon.vue';
+  import CustomDashboard from '@/components/CustomDashboard.vue';
 
-export default {
-  name: 'App',
-  components: {
-    BreweryFactoryIcon,
-    CustomDashboard,
-  },
-};
+  export default {
+    name: 'App',
+    components: {
+      BreweryFactoryIcon,
+      CustomDashboard,
+    },
+  };
 </script>
