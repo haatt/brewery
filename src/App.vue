@@ -1,28 +1,34 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="#241dba"
+      dark
+    >
+      <div class="d-flex align-center">
+        <BreweryFactoryIcon width="50"/>
+
+        <v-toolbar-title class="ml-3">
+           Brewery
+        </v-toolbar-title>
+      </div>
+    </v-app-bar>
+
+    <v-main>
+      <CustomDashboard/>
+    </v-main> 
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import BreweryFactoryIcon from '@/components/icons/BreweryFactoryIcon.vue';
+  import CustomDashboard from '@/components/CustomDashboard.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  export default {
+    name: 'App',
+    components: {
+      BreweryFactoryIcon,
+      CustomDashboard,
+    },
+  };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
